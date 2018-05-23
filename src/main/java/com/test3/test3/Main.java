@@ -3,10 +3,11 @@ package com.test3.test3;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class Test8Application {
+public class Main {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Test8Application.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 }
