@@ -1,5 +1,6 @@
 package com.test3.test3;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,8 +17,11 @@ public class TestConroller {
 	@RequestMapping("/")
 	public String init() throws SQLException
 	{
-	    Statement stmt=dataSource.getConnection().createStatement();
-	    stmt.executeUpdate("CREATE TABLE ticks (tick timestamp)");
+	    //Statement stmt=dataSource.getConnection().createStatement();
+	  //  stmt.executeUpdate("CREATE TABLE ticks (tick timestamp)");
+	   
+	   // ResultSet rs =stmt.executeQuery(arg0);
+	   // rs.get
 		return "hello";
 	}
 }
