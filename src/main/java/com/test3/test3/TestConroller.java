@@ -29,7 +29,7 @@ public class TestConroller {
     
     
     
-    @RequestMapping(value="/createGroup",method=RequestMethod.POST)
+    @RequestMapping(value="/createGroup",method=RequestMethod.GET)
 	public String start(@RequestParam(value="lName",defaultValue="")String lName)
 	{
 		
@@ -41,9 +41,10 @@ public class TestConroller {
      		String pass =createPassword();
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
+				if( !stmt.executeQuery("select name from volonteers where grouppassword=\'"+pass+"\');").next()) {
 			    stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+pass+"\',\'"+lName+"\',true);");
 			    stmt.close();
-			    return pass;
+			    return pass;}
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -56,16 +57,19 @@ public class TestConroller {
     
      	return "notcomplete";
 	}
-    @RequestMapping(value="/createVolonteer",method=RequestMethod.POST)	
+    @RequestMapping(value="/createVolonteer",method=RequestMethod.GET)	
     public String createVolonteer(@RequestParam(value="name",defaultValue="")String name,@RequestParam(value="lName",defaultValue="")String key) throws SQLException
 	{
+    	
     	Statement stmt=dataSource.getConnection().createStatement();
+    	if( !stmt.executeQuery("select name from volonteers where grouppassword=\'"+key+"\');").next()) {
     	stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+key+"\',\'"+name+"\',false);");
     	stmt.close();
-        return "complete";
+        return "complete";}
+    	else return "not complete";
    
 	}
-    @RequestMapping(value="/display",method=RequestMethod.POST)
+    @RequestMapping(value="/display",method=RequestMethod.GET)
 	public DisplayVolonteers display(@RequestParam(value="lName",defaultValue="Test")String name) throws SQLException
 	{
 		HashMap<String,Volonteer>map = new HashMap<String, Volonteer>();
@@ -82,7 +86,7 @@ public class TestConroller {
 		stmt.close();
 		return new DisplayVolonteers(map);
 	}
-    @RequestMapping(value="/eat",method=RequestMethod.POST)
+    @RequestMapping(value="/eat",method=RequestMethod.GET)
 	public String eat(@RequestParam(value="lName",defaultValue="")String lName,@RequestParam(value="name",defaultValue="")String name) throws SQLException
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
@@ -90,7 +94,7 @@ public class TestConroller {
     	stmt.close();
     	return "complete";
 	}
-    @RequestMapping(value="/come",method=RequestMethod.POST)
+    @RequestMapping(value="/come",method=RequestMethod.GET)
 	public String come(@RequestParam(value="lName",defaultValue="")String lName,@RequestParam(value="name",defaultValue="")String name) throws SQLException
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
@@ -106,10 +110,12 @@ public class TestConroller {
 	    Statement stmt=dataSource.getConnection().createStatement();
 	    
 	    ResultSet rs =stmt.executeQuery("select name from test8 where id=33;");
-	    rs.next();
+	    if(rs.next()) {
 	    String s = rs.getString("name");
 	    stmt.close();
-		return s;
+		return s;}
+	    else return "no";
+	   
 	}
 	@RequestMapping("/")
 	public String init2()
