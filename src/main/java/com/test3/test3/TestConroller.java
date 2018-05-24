@@ -105,7 +105,7 @@ public class TestConroller {
 	{
 	    Statement stmt=dataSource.getConnection().createStatement();
 	    
-	    ResultSet rs =stmt.executeQuery("select name from test8 where id=1;");
+	    ResultSet rs =stmt.executeQuery("select name from test8 where id=33;");
 	    rs.next();
 	    String s = rs.getString("name");
 	    stmt.close();
