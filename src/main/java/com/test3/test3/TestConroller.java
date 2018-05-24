@@ -10,18 +10,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+
 @RestController
 public class TestConroller {
+	
+	Gson gson;
     @Autowired
     private DataSource dataSource;
-	@RequestMapping("/")
+	@RequestMapping("/start")
 	public String init() throws SQLException
 	{
-	    //Statement stmt=dataSource.getConnection().createStatement();
-	  //  stmt.executeUpdate("CREATE TABLE ticks (tick timestamp)");
-	   
-	   // ResultSet rs =stmt.executeQuery(arg0);
-	   // rs.get
+	    Statement stmt=dataSource.getConnection().createStatement();
+	    
+	    ResultSet rs =stmt.executeQuery("select name from test8 where id=1;");
+	    String s = rs.getString("name");
+		return s;
+	}
+	@RequestMapping("/")
+	public String init2()
+	{
+	 
 		return "hello";
 	}
 }
