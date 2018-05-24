@@ -41,7 +41,7 @@ public class TestConroller {
      		String pass =createPassword();
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
-			    stmt.executeUpdate("insert into volonteers values(\'"+pass+"\',\'"+lName+"\',true);");
+			    stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+pass+"\',\'"+lName+"\',true);");
 			    stmt.close();
 			    return pass;
 				
@@ -60,7 +60,7 @@ public class TestConroller {
     public String createVolonteer(@RequestParam(value="name",defaultValue="")String name,@RequestParam(value="lName",defaultValue="")String key) throws SQLException
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
-    	stmt.executeUpdate("insert into volonteers values(\'"+key+"\',\'"+name+"\',false);");
+    	stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+key+"\',\'"+name+"\',false);");
     	stmt.close();
         return "complete";
    
@@ -70,16 +70,34 @@ public class TestConroller {
 	{
 		HashMap<String,Volonteer>map = new HashMap<String, Volonteer>();
 		Statement stmt=dataSource.getConnection().createStatement();
-		ResultSet rs=stmt.executeQuery("select name from volonteers where grouppassword=\'"+name+"\' and type=false;");
-		while(rs.next())
+		
+		ResultSet namev=stmt.executeQuery("select name from volonteers where grouppassword=\'"+name+"\' and type=false;");
+	    ResultSet eat=stmt.executeQuery("select eat from volonteers where grouppassword=\'"+name+"\' and type=false;");
+	    ResultSet come=stmt.executeQuery("select come from volonteers where grouppassword=\'"+name+"\' and type=false;");
+		while(namev.next()&&eat.next()&&come.next())
 		{
-			map.put(rs.getString("name"),new Volonteer(rs.getString("name"),false,false));
+			map.put(namev.getString("name"),new Volonteer(namev.getString("name"),come.getBoolean("come"),eat.getBoolean("eat")));
 			
 		}
 		stmt.close();
 		return new DisplayVolonteers(map);
 	}
-    
+    @RequestMapping(value="/eat",method=RequestMethod.POST)
+	public String eat(@RequestParam(value="lName",defaultValue="")String lName,@RequestParam(value="name",defaultValue="")String name) throws SQLException
+	{
+    	Statement stmt=dataSource.getConnection().createStatement();
+    	stmt.executeUpdate("update volonteers set eat=NOT eat where name=\'"+name+"\' and grouppassword=\'"+lName+"\';");
+    	stmt.close();
+    	return "complete";
+	}
+    @RequestMapping(value="/come",method=RequestMethod.POST)
+	public String come(@RequestParam(value="lName",defaultValue="")String lName,@RequestParam(value="name",defaultValue="")String name) throws SQLException
+	{
+    	Statement stmt=dataSource.getConnection().createStatement();
+    	stmt.executeUpdate("update volonteers set come=NOT eat where name=\'"+name+"\' and grouppassword=\'"+lName+"\';");
+    	stmt.close();
+	    return "complete";
+	}
     
     
 	@RequestMapping("/start")
