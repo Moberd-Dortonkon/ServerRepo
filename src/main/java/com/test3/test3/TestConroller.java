@@ -41,9 +41,11 @@ public class TestConroller {
      		String pass =createPassword();
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
-				if(!stmt.executeQuery("select name from volonteers where grouppassword=\'"+pass+"\';").next()) {
+				ResultSet rs=stmt.executeQuery("select name from volonteers where grouppassword=\'"+pass+"\';");
+				if(!rs.next()) {
 			    stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+pass+"\',\'"+lName+"\',true);");
 			    stmt.close();
+			    rs.close();
 			    return pass;}
 				
 			} catch (SQLException e) {
@@ -62,9 +64,11 @@ public class TestConroller {
 	{
     	
     	Statement stmt=dataSource.getConnection().createStatement();
-    	if(stmt.executeQuery("select name from volonteers where grouppassword=\'"+key+"\';").next()) {
+    	ResultSet rs=stmt.executeQuery("select name from volonteers where grouppassword=\'"+key+"\';");
+    	if(rs.next()) {
     	stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+key+"\',\'"+name+"\',false);");
     	stmt.close();
+    	rs.close();
         return "complete";}
     	else return "not complete";
    
@@ -83,6 +87,9 @@ public class TestConroller {
 			map.put(namev.getString("name"),new Volonteer(namev.getString("name"),come.getBoolean("come"),eat.getBoolean("eat")));
 			
 		}
+		namev.close();
+		eat.close();
+		come.close();
 		stmt.close();
 		return new DisplayVolonteers(map);
 	}
@@ -113,6 +120,7 @@ public class TestConroller {
 	    if(rs.next()) {
 	    String s = rs.getString("name");
 	    stmt.close();
+	    rs.close();
 		return s;}
 	    else return "no";
 	   
