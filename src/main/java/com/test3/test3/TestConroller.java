@@ -41,7 +41,7 @@ public class TestConroller {
      		String pass =createPassword();
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
-			    stmt.executeUpdate("insert into volonteers values("+pass+','+lName+",true);");
+			    stmt.executeUpdate("insert into volonteers values(\'"+pass+"\',\'"+lName+"\',true);");
 			    stmt.close();
 			    return pass;
 				
@@ -60,7 +60,7 @@ public class TestConroller {
     public String createVolonteer(@RequestParam(value="name",defaultValue="")String name,@RequestParam(value="lName",defaultValue="")String key) throws SQLException
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
-    	stmt.executeUpdate("insert into volonteers values("+key+','+name+",false);");
+    	stmt.executeUpdate("insert into volonteers values(\'"+key+"\',\'"+name+"\',false);");
     	stmt.close();
         return "complete";
    
