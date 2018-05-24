@@ -24,6 +24,7 @@ public class TestConroller {
 	    Statement stmt=dataSource.getConnection().createStatement();
 	    
 	    ResultSet rs =stmt.executeQuery("select name from test8 where id=1;");
+	    rs.next();
 	    String s = rs.getString("name");
 		return s;
 	}
