@@ -29,7 +29,7 @@ public class TestConroller {
     
     
     
-    @RequestMapping(value="/createGroup",method=RequestMethod.GET)
+    @RequestMapping(value="/createGroup",method=RequestMethod.POST)
 	public String start(@RequestParam(value="lName",defaultValue="")String lName)
 	{
 		
@@ -56,7 +56,7 @@ public class TestConroller {
     
      	return "notcomplete";
 	}
-    @RequestMapping(value="/createVolonteer",method=RequestMethod.GET)	
+    @RequestMapping(value="/createVolonteer",method=RequestMethod.POST)	
     public String createVolonteer(@RequestParam(value="name",defaultValue="")String name,@RequestParam(value="lName",defaultValue="")String key) throws SQLException
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
@@ -65,7 +65,7 @@ public class TestConroller {
         return "complete";
    
 	}
-    @RequestMapping(value="/display",method=RequestMethod.GET)
+    @RequestMapping(value="/display",method=RequestMethod.POST)
 	public DisplayVolonteers display(@RequestParam(value="lName",defaultValue="Test")String name) throws SQLException
 	{
 		HashMap<String,Volonteer>map = new HashMap<String, Volonteer>();
