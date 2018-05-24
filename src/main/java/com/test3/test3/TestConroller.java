@@ -41,7 +41,7 @@ public class TestConroller {
      		String pass =createPassword();
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
-				if( !stmt.executeQuery("select name from volonteers where grouppassword=\'"+pass+"\');").next()) {
+				if(!stmt.executeQuery("select name from volonteers where grouppassword=\'"+pass+"\');").next()) {
 			    stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+pass+"\',\'"+lName+"\',true);");
 			    stmt.close();
 			    return pass;}
@@ -62,7 +62,7 @@ public class TestConroller {
 	{
     	
     	Statement stmt=dataSource.getConnection().createStatement();
-    	if( !stmt.executeQuery("select name from volonteers where grouppassword=\'"+key+"\');").next()) {
+    	if(stmt.executeQuery("select name from volonteers where grouppassword=\'"+key+"\');").next()) {
     	stmt.executeUpdate("insert into volonteers(grouppassword,name,type) values(\'"+key+"\',\'"+name+"\',false);");
     	stmt.close();
         return "complete";}
