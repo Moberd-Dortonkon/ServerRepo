@@ -42,6 +42,7 @@ public class TestConroller {
      		try {
 				Statement stmt=dataSource.getConnection().createStatement();
 			    stmt.executeUpdate("insert into volonteers values("+pass+','+lName+",true);");
+			    stmt.close();
 			    return pass;
 				
 			} catch (SQLException e) {
@@ -60,10 +61,11 @@ public class TestConroller {
 	{
     	Statement stmt=dataSource.getConnection().createStatement();
     	stmt.executeUpdate("insert into volonteers values("+key+','+name+",false);");
+    	stmt.close();
         return "complete";
    
 	}
-  /*  @RequestMapping(value="/display",method=RequestMethod.GET)
+    @RequestMapping(value="/display",method=RequestMethod.GET)
 	public DisplayVolonteers display(@RequestParam(value="lName",defaultValue="Test")String name) throws SQLException
 	{
 		HashMap<String,Volonteer>map = new HashMap<String, Volonteer>();
@@ -74,11 +76,10 @@ public class TestConroller {
 			map.put(rs.getString("name"),new Volonteer(rs.getString("name"),false,false));
 			
 		}
-		
+		stmt.close();
 		return new DisplayVolonteers(map);
 	}
     
-    */
     
     
 	@RequestMapping("/start")
@@ -89,6 +90,7 @@ public class TestConroller {
 	    ResultSet rs =stmt.executeQuery("select name from test8 where id=1;");
 	    rs.next();
 	    String s = rs.getString("name");
+	    stmt.close();
 		return s;
 	}
 	@RequestMapping("/")
